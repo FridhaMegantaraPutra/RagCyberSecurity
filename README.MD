@@ -154,11 +154,6 @@ Hasil ditampilkan dengan:
 - "Vulnerability SQL injection dengan severity tinggi"
 - "Rekomendasi mitigasi untuk kerentanan remote code execution"
 
-### Analisis Spesifik
-- Perbandingan severity vulnerability
-- Trend kerentanan berdasarkan tahun
-- Analisis dampak kerentanan spesifik
-- Rekomendasi patch dan update
 
 ## Batasan Sistem
 
@@ -167,21 +162,7 @@ Hasil ditampilkan dengan:
 3. **Update Manual**: Perlu menjalankan script ulang untuk update data terbaru
 4. **Dependency API**: Bergantung pada ketersediaan NVD API dan Groq API
 
-## Keamanan dan Privasi
 
-- Tidak menyimpan data query pengguna
-- Menggunakan API key yang aman melalui environment variables
-- Hanya mengakses data publik dari NVD
-- Tidak memproses data sensitif pengguna
-
-## Pengembangan Selanjutnya
-
-- [ ] Auto-update data CVE harian
-- [ ] Support untuk bahasa Indonesia
-- [ ] Integrasi dengan sumber threat intelligence tambahan
-- [ ] Dashboard analisis dan visualisasi
-- [ ] Alert system untuk vulnerability kritikal
-- [ ] API endpoint untuk integrasi eksternal
 
 ## Troubleshooting
 
