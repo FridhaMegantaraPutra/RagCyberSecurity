@@ -1,0 +1,12 @@
+streamlit
+groq
+sentence-transformers
+scikit-learn
+numpy
+requests
+python-dotenv
+torch
+transformers
+faiss-cpu
+pandas
+tqdm
