@@ -1,2 +1,9 @@
 .env
 venv
+__pycache__/
+
+data_cve_5tahun.json
+cve_processed_5tahun.json
+cve_summary_5tahun.json
+cve_search_index.json
+cve_embeddings_5tahun.pkl

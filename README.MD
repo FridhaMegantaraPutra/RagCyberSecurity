@@ -1,245 +1,204 @@
-# CyberGuard AI - Sistem RAG Cybersecurity
+# CyberGuard AI - Sistem Chatbot Cybersecurity dengan RAG
 
-## Gambaran Umum
+## Deskripsi Proyek
 
-CyberGuard AI adalah sistem Retrieval-Augmented Generation (RAG) yang dirancang khusus untuk analisis kerentanan cybersecurity menggunakan data CVE (Common Vulnerabilities and Exposures) dari National Vulnerability Database (NVD).
+CyberGuard AI adalah sistem chatbot canggih untuk analisis kerentanan cybersecurity yang mengimplementasikan pipeline RAG (Retrieval-Augmented Generation) dengan data CVE (Common Vulnerabilities and Exposures) dari NVD (National Vulnerability Database). Sistem ini dirancang untuk memberikan informasi real-time tentang kerentanan keamanan, analisis risiko, dan rekomendasi mitigasi.
+
+## Fitur Utama
+
+- **Data CVE Komprehensif**: Mengakses database CVE 5 tahun terakhir dari NVD
+- **Pencarian Semantik**: Mencari kerentanan menggunakan embedding dan cosine similarity
+- **Analisis Real-time**: Analisis kerentanan dengan model LLM terbaru
+- **Antarmuka Web Interaktif**: Dashboard Streamlit yang user-friendly
+- **Response Akurat**: Kombinasi retrieval information dan generative AI
 
 ## Arsitektur Sistem
 
 ```mermaid
 graph TB
-    A[Kueri Pengguna] --> B[Antarmuka Streamlit]
-    B --> C[Pipeline RAG]
-    C --> D[Pencarian Semantik]
-    D --> E[Basis Data Vektor]
-    E --> F[Pengambilan Konteks]
-    F --> G[Groq API]
-    G --> H[LLaMA 3.1 8B Instant]
-    H --> I[Generasi Respons]
-    I --> B
+    A[User Query] --> B[Streamlit UI]
+    B --> C[Semantic Search]
+    C --> D[Vector Database<br/>CVE Embeddings]
+    D --> E[Relevant Context Retrieval]
+    E --> F[Groq API<br/>Llama 3.1 8B]
+    F --> G[Generated Response]
+    G --> H[Display Results<br/>+ Sources]
     
-    J[NVD API] --> K[Pengambilan Data]
-    K --> L[Pemrosesan Teks]
-    L --> M[Pembuatan Embedding]
-    M --> E
+    I[NVD API] --> J[Data Collection<br/>5 Tahun CVE]
+    J --> K[Data Processing<br/>& Cleaning]
+    K --> L[Embedding Generation<br/>Sentence Transformers]
+    L --> D
     
-    subgraph "Basis Pengetahuan"
-        E
-        M
-    end
-    
-    subgraph "Pemrosesan AI"
-        G
-        H
-        I
-    end
 ```
 
-## Komponen Teknis
+## Demo Video
 
-### 1. Pipeline Data
-- **Sumber Data**: NVD API (National Vulnerability Database)
-- **Format Data**: Record CVE JSON
-- **Pemrosesan**: Pembagian teks dan pembuatan embedding
-- **Penyimpanan**: Embedding vektor dengan metadata
+Berikut adalah video demonstrasi penggunaan sistem CyberGuard AI:
 
-### 2. Pipeline RAG
-- **Model Embedding**: sentence-transformers/all-MiniLM-L6-v2
-- **Pencarian Vektor**: Similarity Euclidean distance
-- **Pengambilan**: Pencarian semantik top-k dengan filter metadata
+[![Demo CyberGuard AI]](https://youtu.be/hFEtUu8S1jM)
 
-### 3. Integrasi AI
-- **Penyedia LLM**: Groq API
-- **Model**: llama-3.1-8b-instant
-- **Inferensi**: Generasi respons streaming
+*Klik gambar di atas untuk menonton video demo di YouTube*
+
+## Teknologi yang Digunakan
+
+### Backend & Processing
+- **Python 3.8+** - Bahasa pemrograman utama
+- **NVD API** - Sumber data kerentanan resmi
+- **Sentence Transformers** - Model embedding untuk semantic search
+- **Scikit-learn** - Perhitungan cosine similarity
+- **NumPy** - Processing data numerik
+
+### AI & Machine Learning
+- **Groq API** - Inference engine dengan Llama 3.1 8B Instant
+- **RAG Pipeline** - Retrieval-Augmented Generation architecture
+- **Vector Embeddings** - all-MiniLM-L6-v2 model
+- **Semantic Search** - Pencarian berbasis makna
+
+### Frontend & Deployment
+- **Streamlit** - Framework untuk antarmuka web
+- **CSS Custom** - Styling dan user experience
+- **Environment Variables** - Management konfigurasi sensitif
 
 ## Struktur Proyek
 
 ```
-CyberSecurityRAG/
-├── app.py                 # Antarmuka chatbot Streamlit
-├── ambil_data.py          # Pengumpulan data dari NVD API
-├── embedding_chunking.py  # Pembuatan dan penyimpanan embedding
-├── requirements.txt       # Dependensi Python
-├── .env                  # Variabel lingkungan
-├── data_cve.json         # Data CVE mentah
-├── cve_processed.json    # Data CVE terproses
-└── cve_embeddings.pkl    # Embedding vektor
+cyberguard-ai/
+├── ambil_data.py              # Script pengambilan data CVE dari NVD
+├── embedding_chunking.py      # Pembuatan embedding dan chunking
+├── app.py                     # Aplikasi Streamlit utama
+├── requirements.txt           # Dependencies Python
+├── .env                      # Environment variables
+├── data_cve_5tahun.json      # Data CVE mentah 5 tahun
+├── cve_processed_5tahun.json # Data CVE yang sudah diproses
+├── cve_embeddings_5tahun.pkl # File embeddings
+└── cve_summary_5tahun.json   # Statistik data CVE
 ```
 
-## Instalasi & Setup
+## Instalasi dan Setup
 
-### Prasyarat
-- Python 3.8+
-- Akun Groq API
-- Akses NVD API
+### Prerequisites
+- Python 3.8 atau lebih tinggi
+- API Key Groq
+- Koneksi internet untuk mengakses NVD API
 
-### 1. Clone Repository
+### Langkah Instalasi
+
+1. **Clone atau download proyek ini**
+
+2. **Buat virtual environment**
 ```bash
-git clone <repository-url>
-cd CyberSecurityRAG
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
 ```
 
-### 2. Install Dependencies
+3. **Install dependencies**
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Konfigurasi Environment
-Buat file `.env`:
+4. **Setup environment variables**
+Buat file `.env` dan tambahkan:
 ```env
-GROQ_API_KEY=kunci_api_groq_anda
+GROQ_API_KEY=your_groq_api_key_here
 ```
 
-### 4. Persiapan Data
+5. **Ambil dan proses data CVE**
 ```bash
-# Langkah 1: Kumpulkan data CVE dari NVD
 python ambil_data.py
+```
 
-# Langkah 2: Buat embedding
+6. **Buat embeddings**
+```bash
 python embedding_chunking.py
 ```
 
-### 5. Jalankan Aplikasi
+7. **Jalankan aplikasi**
 ```bash
 streamlit run app.py
 ```
 
-## Penggunaan
+## Cara Penggunaan
 
-### Pengumpulan Data
-Sistem secara otomatis mengambil data CVE dari NVD API dengan fitur berikut:
-- Mengambil 500+ record CVE
-- Memproses metadata: ID CVE, deskripsi, skor CVSS, severity, produk terdampak
-- Mendukung filter rentang tanggal
+### 1. Pengambilan Data
+Sistem secara otomatis mengambil data CVE 5 tahun terakhir dari NVD API dengan memperhatikan batasan rate limiting.
 
-### Antarmuka Chat
-1. **Mulai aplikasi**: `streamlit run app.py`
-2. **Ajukan pertanyaan cybersecurity**:
-   - "Apa kerentanan XSS terbaru?"
-   - "Cari CVE dengan severity critical bulan lalu"
-   - "Jelaskan CVE-2024-12345"
-3. **Dapatkan respons berbasis AI** dengan konteks CVE
+### 2. Processing Data
+Data CVE diproses dan dibersihkan untuk:
+- Ekstraksi deskripsi dalam bahasa Inggris
+- Parsing metrics CVSS (v2, v3.0, v3.1)
+- Identifikasi CWE (Common Weakness Enumeration)
+- Formatting tanggal dan metadata
 
-## Konfigurasi
+### 3. Embedding Generation
+Teks deskripsi CVE diubah menjadi vector embeddings menggunakan model all-MiniLM-L6-v2 untuk memungkinkan pencarian semantik.
 
-### Pengaturan Model
-- **Model Embedding**: all-MiniLM-L6-v2 (384 dimensi)
-- **LLM**: llama-3.1-8b-instant
-- **Temperature**: 0.3
-- **Max Tokens**: 1024
+### 4. Query Processing
+- User memasukkan query melalui antarmuka Streamlit
+- Sistem mencari chunk teks yang paling relevan menggunakan cosine similarity
+- Context yang relevan dikombinasikan dengan prompt system
+- LLM menghasilkan respons berdasarkan context yang tersedia
 
-### Parameter Pencarian
-- **Hasil Top-k**: 3
-- **Metrik Similarity**: Euclidean distance
-- **Filter Metadata**: Severity, rentang tanggal
+### 5. Response Display
+Hasil ditampilkan dengan:
+- Jawaban analisis yang komprehensif
+- Daftar sumber CVE yang digunakan
+- Similarity score untuk transparansi
+- Metadata kerentanan (severity, score, tanggal)
 
-## Fitur
+## Contoh Penggunaan
 
-### Kemampuan Inti
-- **Pencarian Semantik**: Temukan CVE relevan menggunakan bahasa natural
-- **Respons Berkonteks**: Respons AI berdasarkan data CVE
-- **Pemrosesan Real-time**: Respons streaming untuk UX yang lebih baik
-- **Memori Percakapan**: Mempertahankan konteks chat dalam sesi
+### Query Umum
+- "Apa vulnerability kritis yang mempengaruhi Apache Log4j?"
+- "CVE terbaru untuk Microsoft Exchange Server?"
+- "Vulnerability SQL injection dengan severity tinggi"
+- "Rekomendasi mitigasi untuk kerentanan remote code execution"
 
-### Fitur Teknis
-- **Similarity Vektor**: Pengambilan berbasis Euclidean distance
-- **Filter Metadata**: Filter berdasarkan severity dan tanggal
-- **Penanganan Error**: Fallback yang graceful untuk informasi yang tidak tersedia
-- **Respons Streaming**: Generasi respons AI real-time
+### Analisis Spesifik
+- Perbandingan severity vulnerability
+- Trend kerentanan berdasarkan tahun
+- Analisis dampak kerentanan spesifik
+- Rekomendasi patch dan update
 
-## Alur Data
+## Batasan Sistem
 
-```mermaid
-sequenceDiagram
-    participant U as Pengguna
-    participant S as Streamlit UI
-    participant R as Sistem RAG
-    participant V as Basis Data Vektor
-    participant G as Groq API
-    
-    U->>S: Kirim Kueri
-    S->>R: Proses Kueri
-    R->>V: Pencarian Semantik
-    V->>R: Kembalikan CVE Teratas
-    R->>G: Hasilkan Respons dengan Konteks
-    G->>S: Stream Respons
-    S->>U: Tampilkan Jawaban
-```
+1. **Data Terbatas**: Hanya mencakup CVE 5 tahun terakhir
+2. **Bahasa**: Fokus pada deskripsi bahasa Inggris
+3. **Update Manual**: Perlu menjalankan script ulang untuk update data terbaru
+4. **Dependency API**: Bergantung pada ketersediaan NVD API dan Groq API
 
-## Fitur Keamanan
+## Keamanan dan Privasi
 
-- **Perlindungan API Key**: Penyimpanan variabel lingkungan
-- **Validasi Data**: Sanitisasi dan validasi input
-- **Penanganan Error**: Pesan error yang aman tanpa kebocoran informasi
-- **Pembatasan Konteks**: Respons ketat berdasarkan data CVE
+- Tidak menyimpan data query pengguna
+- Menggunakan API key yang aman melalui environment variables
+- Hanya mengakses data publik dari NVD
+- Tidak memproses data sensitif pengguna
 
-## Integrasi API
+## Pengembangan Selanjutnya
 
-### Groq API
-- **Endpoint**: Chat completions
-- **Model**: llama-3.1-8b-instant
-- **Streaming**: Diaktifkan untuk respons real-time
+- [ ] Auto-update data CVE harian
+- [ ] Support untuk bahasa Indonesia
+- [ ] Integrasi dengan sumber threat intelligence tambahan
+- [ ] Dashboard analisis dan visualisasi
+- [ ] Alert system untuk vulnerability kritikal
+- [ ] API endpoint untuk integrasi eksternal
 
-### NVD API
-- **Endpoint**: /rest/json/cves/2.0/
-- **Autentikasi**: Tidak diperlukan
-- **Batas Rate**: Menghormati panduan NVD API
-
-## Kinerja
-
-### Metrik yang Diharapkan
-- **Waktu Respons**: < 5 detik
-- **Akurasi**: Respons berbasis konteks
-- **Skalabilitas**: 500+ record CVE dengan pencarian efisien
-
-### Optimasi
-- **Cache Embedding**: Vektor pre-computed untuk pengambilan cepat
-- **Pemrosesan Batch**: Pengambilan data yang efisien
-- **Streaming**: Tampilan respons progresif
-
-## Pemecahan Masalah
+## Troubleshooting
 
 ### Masalah Umum
 
-1. **Error API Key**
-   ```
-   Solusi: Verifikasi GROQ_API_KEY di file .env
-   ```
+1. **GROQ_API_KEY tidak ditemukan**
+   - Pastikan file `.env` ada di root directory
+   - Pastikan format file `.env` benar
 
-2. **Embedding Hilang**
-   ```
-   Solusi: Jalankan python embedding_chunking.py terlebih dahulu
-   ```
+2. **File embeddings tidak ditemukan**
+   - Jalankan `python embedding_chunking.py` terlebih dahulu
+   - Pastikan semua script dijalankan secara berurutan
 
-3. **Batas NVD API**
-   ```
-   Solusi: Gunakan data sampel yang disediakan atau implementasikan logika retry
-   ```
+3. **Error connection NVD API**
+   - Periksa koneksi internet
+   - Tunggu beberapa saat dan coba lagi (rate limiting)
 
-### Log dan Debugging
-- Periksa log Streamlit untuk error API
-- Validasi keberadaan file data
-- Verifikasi integritas file embedding
+4. **Memory error saat embedding**
+   - Kurangi batch size di script embedding
+   - Tutup aplikasi lain yang menggunakan memory besar
 
-## Lisensi
-
-Proyek ini untuk tujuan penilaian teknis sebagai bagian dari evaluasi Zentara AI/ML Engineer.
-
-## Kontribusi
-
-Ikuti pola yang telah ditetapkan untuk:
-- Fungsi pemrosesan data
-- Komponen pipeline RAG
-- Konsistensi UI/UX
-- Standar penanganan error
-
-## Dukungan
-
-Untuk masalah teknis terkait implementasi ini, lihat:
-- Dokumentasi Streamlit
-- Dokumentasi Groq API
-- Dokumentasi NVD API
-- Dokumentasi library Sentence-Transformers
-
----
