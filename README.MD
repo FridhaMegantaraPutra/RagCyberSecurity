@@ -35,7 +35,8 @@ graph TB
 
 Berikut adalah video demonstrasi penggunaan sistem CyberGuard AI:
 
-[![Demo CyberGuard AI]](https://youtu.be/hFEtUu8S1jM)
+[![Demo CyberGuard AI](https://img.youtube.com/vi/hFEtUu8S1jM/maxresdefault.jpg)](https://youtu.be/hFEtUu8S1jM)
+
 
 *Klik gambar di atas untuk menonton video demo di YouTube*
 
